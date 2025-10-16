@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Link Adventure, click if you dare</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ff8e53, #ff6b6b);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Your Mystery Link!</h1>
+        <div class="button-grid">
+            <button onclick="goToRandomLink()">Mystery 1</button>
+            <button onclick="goToRandomLink()">Mystery 2</button>
+            <button onclick="goToRandomLink()">Mystery 3</button>
+            <button onclick="goToRandomLink()">Mystery 4</button>
+            <button onclick="goToRandomLink()">Mystery 5</button>
+            <button onclick="goToRandomLink()">Mystery 6</button>
+        </div>
+    </div>
+    <script>
+        const links = [
+            "https://t.co/4csuauOxd1",
+            "https://t.co/pd0ttLmlft",
+            "https://t.co/4x8eWkeHSk",
+            "https://t.co/VcRAYuHbQz",
+            "https://t.co/jjZrVfSNNF",
+            "https://t.co/B5y4cVFNsL" // Your original link
+        ];
+        function goToRandomLink() {
+            const randomIndex = Math.floor(Math.random() * links.length);
+            window.location.href = links[randomIndex];
+        }
+    </script>
+</body>
+</html>
