@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mystery Link Adventure, click if you dare</title>
+    <title>Mystery Link Adventure</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -14,6 +14,7 @@
             height: 100vh;
             margin: 0;
             color: #fff;
+            user-select: none; /* Prevent text selection */
         }
         .container {
             text-align: center;
@@ -32,6 +33,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
+            margin-bottom: 20px;
         }
         button {
             padding: 15px 30px;
@@ -53,19 +55,43 @@
             transform: translateY(0);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
+        #content-frame {
+            display: none; /* Hidden iframe */
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 10px;
+        }
+        #content-container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 80%;
+            max-height: 80vh;
+            overflow: auto;
+            color: #000;
+            display: none; /* Hidden until content loads */
+        }
+        #loading {
+            font-size: 1.5em;
+            display: none;
+        }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Disable right-click -->
     <div class="container">
         <h1>Choose Your Mystery Link!</h1>
         <div class="button-grid">
-            <button onclick="goToRandomLink()">Mystery 1</button>
-            <button onclick="goToRandomLink()">Mystery 2</button>
-            <button onclick="goToRandomLink()">Mystery 3</button>
-            <button onclick="goToRandomLink()">Mystery 4</button>
-            <button onclick="goToRandomLink()">Mystery 5</button>
-            <button onclick="goToRandomLink()">Mystery 6</button>
+            <button onclick="loadRandomLink()">Mystery 1</button>
+            <button onclick="loadRandomLink()">Mystery 2</button>
+            <button onclick="loadRandomLink()">Mystery 3</button>
+            <button onclick="loadRandomLink()">Mystery 4</button>
+            <button onclick="loadRandomLink()">Mystery 5</button>
+            <button onclick="loadRandomLink()">Mystery 6</button>
         </div>
+        <div id="loading">Loading...</div>
+        <div id="content-container"></div>
+        <iframe id="content-frame"></iframe>
     </div>
     <script>
         const links = [
@@ -76,10 +102,40 @@
             "https://t.co/jjZrVfSNNF",
             "https://t.co/B5y4cVFNsL" // Your original link
         ];
-        function goToRandomLink() {
+
+        function loadRandomLink() {
             const randomIndex = Math.floor(Math.random() * links.length);
-            window.location.href = links[randomIndex];
+            const selectedLink = links[randomIndex];
+            const iframe = document.getElementById('content-frame');
+            const contentContainer = document.getElementById('content-container');
+            const loading = document.getElementById('loading');
+
+            // Show loading message
+            loading.style.display = 'block';
+            contentContainer.style.display = 'none';
+            iframe.style.display = 'none';
+
+            // Try loading in iframe
+            iframe.src = selectedLink;
+            iframe.onload = () => {
+                loading.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+            iframe.onerror = () => {
+                // Fallback if iframe fails (e.g., X-Frame-Options)
+                loading.textContent = 'Cannot load this site in frame. Redirecting...';
+                setTimeout(() => {
+                    window.location.href = selectedLink; // Fallback redirect
+                }, 2000);
+            };
         }
+
+        // Attempt to block dev tools (basic deterrent)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
